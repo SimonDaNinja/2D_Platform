@@ -15,7 +15,7 @@ LEFT = 2
 RIGHT = 3
 
 class Character:
-    def __init__(self, startX, startY, color, radius, velocityX = 0, velocityY = 0, accelerationX = 0, accelerationY = 0, maxRunSpeed = 800, stoppingRateVel = 1500):
+    def __init__(self, startX, startY, color, radius, velocityX = 0, velocityY = 0, accelerationX = 0, accelerationY = 0, maxRunSpeed = 800, stoppingRateVel = 1500, xBounciness = 0.5, yBounciness = .0):
         self.x = startX
         self.y = startY
         self.color = color
@@ -27,6 +27,8 @@ class Character:
         self.maxRunSpeed = maxRunSpeed
         self.onTheGround = False
         self.stoppingRateVel = stoppingRateVel
+        self.xBounciness = xBounciness
+        self.yBounciness = yBounciness
 
     def Draw(self, screen):
         screenX = int(self.x)
@@ -91,10 +93,31 @@ class Character:
                     if abs(shortestXMoveOut)>abs(shortestYMoveOut):
                         self.y += shortestYMoveOut
                         onTopOfSolid = True
-                        self.velocityY = 0
+                        if shortestYMoveOut>0 and self.velocityY>0:
+                            signMove = abs(shortestYMoveOut)/shortestYMoveOut
+                            signVel = abs(self.velocityY)/self.velocityY
+                        else:
+                            signMove = 1
+                            signVel = 1
+                        if signMove == signVel:
+                            print(self.velocityY)
+                            if abs(self.velocityY)>300:
+                                self.velocityY = -self.velocityY*self.yBounciness
+                            else:
+                                self.velocityY = 0
                     else:
                         self.x += shortestXMoveOut
-                        self.velocityX = 0
+                        if shortestXMoveOut>0 and self.velocityX>0:
+                            signMove = abs(shortestXMoveOut)/shortestXMoveOut
+                            signVel = abs(self.velocityX)/self.velocityX
+                        else:
+                            signMove = 1
+                            signVel = 1
+                        if signMove == signVel:
+                            if abs(self.velocityX)>300:
+                                self.velocityX = -self.velocityX*self.xBounciness
+                            else:
+                                self.velocityX = 0
         return onTopOfSolid
 
 
