@@ -71,33 +71,30 @@ class Character:
             self.onTheGround = False
 
     def CollideWithSolid(self, solid):
-        collisionsResolved = False
         onTopOfSolid = False
-        while not collisionsResolved:
-            collisionsResolved = True
-            for seg in solid.segments:
-                leftX = self.x-self.radius
-                rightX = self.x+self.radius
-                topY = self.y+self.radius
-                bottomY = self.y-self.radius
-                if((seg[0] < leftX) and (leftX < (seg[0]+seg[2])))or((seg[0] < rightX) and (rightX < (seg[0]+seg[2])))or((seg[0] > leftX) and (rightX > (seg[0]+seg[2]))):
-                    if abs(seg[0]-rightX)>abs(seg[0]+seg[2]-leftX):
-                        shortestXMoveOut = seg[0]+seg[2]-leftX
-                    else:
-                        shortestXMoveOut = seg[0]-rightX
+        for seg in solid.segments:
+            leftX = self.x-self.radius
+            rightX = self.x+self.radius
+            topY = self.y+self.radius
+            bottomY = self.y-self.radius
+            if((seg[0] < leftX) and (leftX < (seg[0]+seg[2])))or((seg[0] < rightX) and (rightX < (seg[0]+seg[2])))or((seg[0] > leftX) and (rightX > (seg[0]+seg[2]))):
+                if abs(seg[0]-rightX)>abs(seg[0]+seg[2]-leftX):
+                    shortestXMoveOut = seg[0]+seg[2]-leftX
+                else:
+                    shortestXMoveOut = seg[0]-rightX
 
-                    if((seg[1] >= bottomY) and (bottomY > (seg[1]-seg[3]))) or ((seg[1] >= topY) and (topY > (seg[1]-seg[3]))) or ((seg[1] <= topY) and (bottomY < (seg[1]-seg[3]))):
-                        if abs(seg[1]-bottomY)>abs(seg[1]-seg[3]-topY):
-                            shortestYMoveOut = seg[1]-seg[3]-topY
-                        else:
-                            shortestYMoveOut = seg[1]-bottomY
-                        if abs(shortestXMoveOut)>abs(shortestYMoveOut):
-                            self.y += shortestYMoveOut
-                            onTopOfSolid = True
-                            self.velocityY = 0
-                        else:
-                            self.x += shortestXMoveOut
-                            self.velocityX = 0
+                if((seg[1] >= bottomY) and (bottomY > (seg[1]-seg[3]))) or ((seg[1] >= topY) and (topY > (seg[1]-seg[3]))) or ((seg[1] <= topY) and (bottomY < (seg[1]-seg[3]))):
+                    if abs(seg[1]-bottomY)>abs(seg[1]-seg[3]-topY):
+                        shortestYMoveOut = seg[1]-seg[3]-topY
+                    else:
+                        shortestYMoveOut = seg[1]-bottomY
+                    if abs(shortestXMoveOut)>abs(shortestYMoveOut):
+                        self.y += shortestYMoveOut
+                        onTopOfSolid = True
+                        self.velocityY = 0
+                    else:
+                        self.x += shortestXMoveOut
+                        self.velocityX = 0
         return onTopOfSolid
 
 
