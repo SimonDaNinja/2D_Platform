@@ -19,11 +19,20 @@ class Stage:
     def __init__(self,
             screen,
             character,
+            isPeriodic,
+            stageWidth,
+            stageHeight,
             solids = EXAMPLE_SOLIDS):
+
         self.screen = screen
         self.solids = solids
         self.clock = pygame.time.Clock()
         self.character = character
+        self.isPeriodic = isPeriodic
+        self.stageWidth = stageWidth
+        self.stageHeight = stageHeight
+        self.character.stageWidth = stageWidth
+        self.character.stageHeight = stageHeight
 
     def Run(self):
         playing = True
@@ -40,7 +49,7 @@ class Stage:
             if pressed[pygame.K_RIGHT]:
                 self.character.Run(movement_constants.RIGHT)
             self.character.Gravitate(GRAVITY_CONSTANT_X, GRAVITY_CONSTANT_Y)
-            self.character.Step(D_T, True)
+            self.character.Step(D_T, self.isPeriodic)
             isOnTheGround = False
             for solid in self.solids:
                 isOnTheGround = bool(isOnTheGround + self.character.CollideWithSolid(solid))
@@ -49,8 +58,9 @@ class Stage:
             if self.character.onTheGround:
                 self.character.SlowDown(D_T)
             self.character.Draw()
+            topLeftX, topLeftY = self.character.GetUpperLeftCorner()
             for solid in self.solids:
-                solid.Draw(self.screen)
+                solid.Draw(self.screen, self.stageWidth, self.stageHeight, topLeftX, topLeftY)
             pygame.display.flip()
             self.clock.tick(FPS)
             self.character.accelerationX = 0
@@ -60,5 +70,5 @@ if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode((WIDTH,HEIGHT))
     character = Character(screen, int(WIDTH/2), int(HEIGHT/2), (255,215,0), 50)
-    stage = Stage(screen, character)
+    stage = Stage(screen, character, True)
     stage.Run()

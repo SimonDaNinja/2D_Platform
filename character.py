@@ -2,11 +2,29 @@ import pygame
 import movement_constants
 
 class Character:
-    def __init__(self, surface, startX, startY, color, radius, velocityX = 0, velocityY = 0, accelerationX = 0, accelerationY = 0, maxRunSpeed = 800, stoppingRateVel = 1500, xBounciness = 0.5, yBounciness = .0):
+    def __init__(self,
+            surface,
+            startX,
+            startY,
+            color,
+            radius,
+            stageWidth = None,
+            stageHeight = None,
+            velocityX = 0,
+            velocityY = 0,
+            accelerationX = 0,
+            accelerationY = 0,
+            maxRunSpeed = 800,
+            stoppingRateVel = 1500,
+            xBounciness = 0.5,
+            yBounciness = .0):
+
         self.x = startX
         self.y = startY
         self.color = color
         self.radius = radius
+        self.stageWidth = stageWidth
+        self.stageHeight = stageHeight
         self.accelerationX = accelerationX
         self.accelerationY = accelerationY
         self.velocityX = velocityX
@@ -16,12 +34,29 @@ class Character:
         self.stoppingRateVel = stoppingRateVel
         self.xBounciness = xBounciness
         self.yBounciness = yBounciness
-        self.stageWidth, self.stageHeight = surface.get_size()
+        self.screenWidth, self.screenHeight = surface.get_size()
         self.surface = surface
 
+    def GetUpperLeftCorner(self):
+            upperLeftXA = max(int(self.x - self.screenWidth/2),0)
+            upperLeftX = min(upperLeftXA, int(self.stageWidth - self.screenWidth))
+            upperLeftYA = min(int(self.y + self.screenHeight/2), self.stageHeight)
+            upperLeftY = max(upperLeftYA, int(self.screenHeight))
+            upperLeft = (upperLeftX, upperLeftY)
+            return upperLeft
+
     def Draw(self):
-        screenX = int(self.x)
-        screenY = int(self.stageHeight - self.y)
+        """
+        if self.stageWidth == self.screenWidth and self.stageHeight== self.screenHeight:
+            screenX = int(self.x)
+            screenY = int(self.stageHeight - self.y)
+        else:
+        """
+        upperLeftX, upperLeftY = self.GetUpperLeftCorner()
+        relativeX = self.x - upperLeftX
+        relativeY = self.y - upperLeftY + self.stageHeight
+        screenX = int(relativeX)
+        screenY = int(self.stageHeight - relativeY)
         pygame.draw.circle(self.surface, self.color, (screenX, screenY), self.radius)
 
     def Gravitate(self, gravAccX, gravAccY):
@@ -37,8 +72,12 @@ class Character:
             if self.x > self.stageWidth:
                 self.x = 0
         else:
-            if self.x<0 or self.x > self.stageWidth:
-                pass
+            if self.x<0:
+                self.x = 0
+                self.velocityX = 0
+            elif self.x > self.stageWidth:
+                self.x = self.stageWidth
+                self.velocityX = 0
             else:
                 self.x += self.velocityX*dT
                 self.y += self.velocityY*dT
