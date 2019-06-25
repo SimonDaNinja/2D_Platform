@@ -94,10 +94,3 @@ class Stage:
             self.clock.tick(FPS)
             self.character.accelerationX = 0
             self.character.accelerationY = 0
-
-if __name__ == '__main__':
-    pygame.init()
-    screen = pygame.display.set_mode((WIDTH,HEIGHT))
-    character = Character(screen, int(WIDTH/2), int(HEIGHT/2), (255,215,0), 50)
-    stage = Stage(screen, character, True)
-    stage.Run()
