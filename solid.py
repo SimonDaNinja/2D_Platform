@@ -39,3 +39,55 @@ class Solid:
             screenX = int(relativeX)
             screenY = int(stageHeight - relativeY)
             pygame.draw.rect(surface, self.color, pygame.Rect(screenX, screenY, seg[2], seg[3]))
+
+    def CollideWithCharacter(self, character):
+        onTopOfSolid = False
+        for seg in self.segments:
+            leftX = character.x-character.radius
+            rightX = character.x+character.radius
+            topY = character.y+character.radius
+            bottomY = character.y-character.radius
+            leftEndSurrounded = ((seg[0] < leftX) and (leftX < (seg[0]+seg[2])))
+            rightEndSurrounded = ((seg[0] < rightX) and (rightX < (seg[0]+seg[2])))
+            segmentSurroundedX = ((seg[0] >= leftX) and (rightX >= (seg[0]+seg[2])))
+            if leftEndSurrounded or rightEndSurrounded or segmentSurroundedX:
+                if abs(seg[0]-rightX)>abs(seg[0]+seg[2]-leftX):
+                    shortestXMoveOut = seg[0]+seg[2]-leftX
+                else:
+                    shortestXMoveOut = seg[0]-rightX
+                bottomSurrounded = ((seg[1] >= bottomY) and (bottomY > (seg[1]-seg[3])))
+                topSurrounded = ((seg[1] >= topY) and (topY > (seg[1]-seg[3])))
+                segmentSurroundedY = ((seg[1] <= topY) and (bottomY < (seg[1]-seg[3])))
+                if bottomSurrounded or topSurrounded or segmentSurroundedY:
+                    if abs(seg[1]-bottomY)>abs(seg[1]-seg[3]-topY):
+                        shortestYMoveOut = seg[1]-seg[3]-topY
+                    else:
+                        shortestYMoveOut = seg[1]-bottomY
+                    if abs(shortestXMoveOut)>abs(shortestYMoveOut):
+                        character.y += shortestYMoveOut
+                        onTopOfSolid = True
+                        if shortestYMoveOut>0 and character.velocityY>0:
+                            signMove = abs(shortestYMoveOut)/shortestYMoveOut
+                            signVel = abs(character.velocityY)/character.velocityY
+                        else:
+                            signMove = 1
+                            signVel = 1
+                        if signMove == signVel:
+                            if abs(character.velocityY)>300:
+                                character.velocityY = -character.velocityY*character.yBounciness
+                            else:
+                                character.velocityY = 0
+                    else:
+                        character.x += shortestXMoveOut
+                        if shortestXMoveOut>0 and character.velocityX>0:
+                            signMove = abs(shortestXMoveOut)/shortestXMoveOut
+                            signVel = abs(character.velocityX)/character.velocityX
+                        else:
+                            signMove = 1
+                            signVel = 1
+                        if signMove == signVel:
+                            if abs(character.velocityX)>300:
+                                character.velocityX = -character.velocityX*character.xBounciness
+                            else:
+                                character.velocityX = 0
+        return onTopOfSolid

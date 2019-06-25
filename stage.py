@@ -104,7 +104,7 @@ class Stage:
             self.character.Step(D_T, self.isPeriodic)
             isOnTheGround = False
             for solid in self.solids:
-                isOnTheGround = bool(isOnTheGround + self.character.CollideWithSolid(solid))
+                isOnTheGround = bool(isOnTheGround + solid.CollideWithCharacter(self.character))
             self.character.onTheGround = isOnTheGround
 
             if self.character.onTheGround:
