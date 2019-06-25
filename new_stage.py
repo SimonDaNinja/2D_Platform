@@ -39,7 +39,7 @@ pipeBottom = Solid(RED, [(400+450, groundLevel+platformSpacing*4, pipeThickness,
 solids.append(pipeBottom)
 
 separatorHeight = 500
-pipeTop = Solid(RED, [(400+450+pipeWidth, groundLevel+platformSpacing*4, pipeThickness, platformSpacing*3-pipeWidth),
+pipeTop = Solid(RED, [(400+450+pipeWidth, groundLevel+platformSpacing*3, pipeThickness, platformSpacing*2-pipeWidth),
     (400+450+pipeWidth, pipeWidth+groundLevel+platformSpacing, 800-pipeWidth*2, pipeThickness),
     (400+450+800-pipeWidth, separatorHeight+groundLevel+platformSpacing*6, pipeThickness, separatorHeight+platformSpacing*5+pipeThickness-pipeWidth)])
 solids.append(pipeTop)
