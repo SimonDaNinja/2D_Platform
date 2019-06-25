@@ -33,6 +33,35 @@ class Stage:
         self.stageHeight = stageHeight
         self.character.stageWidth = stageWidth
         self.character.stageHeight = stageHeight
+        self.screenWidth, self.screenHeight = screen.get_size()
+
+    def SetStageWidth(self, stageWidth):
+        self.stageWidth = stageWidth
+        self.character.stageWidth = stageWidth
+
+    def SetStageHeight(self, stageHeight):
+        self.stageHeight = stageHeight
+        self.character.stageHeight = stageHeight
+
+    def DrawStage(self, maxDim):
+        # This method is only meant to be used for getting an overview of the stage during development!
+        if self.stageWidth > self.stageHeight:
+            stageToScreenFactor = maxDim/self.stageWidth
+        else:
+            stageToScreenFactor = maxDim/self.stageHeight
+        screenWidth = int(stageToScreenFactor*self.stageWidth)
+        screenHeight = int(stageToScreenFactor*self.stageHeight)
+
+        screen = pygame.display.set_mode((screenWidth,screenHeight))
+
+        screen.fill((0,128,255))
+        drawSolids = [Solid(solid.color,[tuple(val*stageToScreenFactor for val in seg) for seg in solid.segments]) for solid in self.solids]
+        for solid in drawSolids:
+            solid.Draw(screen, screenWidth, screenHeight, 0, screenHeight)
+        character = Character(screen, int(self.character.x*stageToScreenFactor), int(self.character.y*stageToScreenFactor), self.character.color, int(self.character.radius*stageToScreenFactor), screenWidth, screenHeight)
+        character.Draw()
+        pygame.display.flip()
+        
 
     def Run(self):
         playing = True

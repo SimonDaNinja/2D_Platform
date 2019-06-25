@@ -1,7 +1,9 @@
 import pygame
+import math
 import movement_constants
 
 class Character:
+    MAX_SPEED = 8000
     def __init__(self,
             surface,
             startX,
@@ -64,6 +66,11 @@ class Character:
         self.accelerationY += gravAccY
 
     def Step(self, dT, isPeriodic):
+        speed = math.sqrt(self.velocityX**2 + self.velocityY**2)
+        if speed>self.MAX_SPEED:
+            rescaleFactor = self.MAX_SPEED/speed
+            self.velocityX *= rescaleFactor
+            self.velocityY *= rescaleFactor
         if isPeriodic:
             self.x += self.velocityX*dT
             self.y += self.velocityY*dT
@@ -114,13 +121,19 @@ class Character:
             rightX = self.x+self.radius
             topY = self.y+self.radius
             bottomY = self.y-self.radius
-            if((seg[0] < leftX) and (leftX < (seg[0]+seg[2])))or((seg[0] < rightX) and (rightX < (seg[0]+seg[2])))or((seg[0] > leftX) and (rightX > (seg[0]+seg[2]))):
+            leftEndSurrounded = ((seg[0] < leftX) and (leftX < (seg[0]+seg[2])))
+            rightEndSurrounded = ((seg[0] < rightX) and (rightX < (seg[0]+seg[2])))
+            segmentSurroundedX = ((seg[0] >= leftX) and (rightX >= (seg[0]+seg[2])))
+            if leftEndSurrounded or rightEndSurrounded or segmentSurroundedX:
                 if abs(seg[0]-rightX)>abs(seg[0]+seg[2]-leftX):
                     shortestXMoveOut = seg[0]+seg[2]-leftX
                 else:
                     shortestXMoveOut = seg[0]-rightX
 
-                if((seg[1] >= bottomY) and (bottomY > (seg[1]-seg[3]))) or ((seg[1] >= topY) and (topY > (seg[1]-seg[3]))) or ((seg[1] <= topY) and (bottomY < (seg[1]-seg[3]))):
+                bottomSurrounded = ((seg[1] >= bottomY) and (bottomY > (seg[1]-seg[3])))
+                topSurrounded = ((seg[1] >= topY) and (topY > (seg[1]-seg[3])))
+                segmentSurroundedY = ((seg[1] <= topY) and (bottomY < (seg[1]-seg[3])))
+                if bottomSurrounded or topSurrounded or segmentSurroundedY:
                     if abs(seg[1]-bottomY)>abs(seg[1]-seg[3]-topY):
                         shortestYMoveOut = seg[1]-seg[3]-topY
                     else:
