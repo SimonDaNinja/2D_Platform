@@ -19,7 +19,7 @@ character = Character(screen, int(WIDTH/2), int(HEIGHT/2), (255,215,0), 50)
 
 solids = []
 
-groundLevel = 200
+groundLevel = 100
 ground = Solid(GREEN, [(0,groundLevel,STAGE_WIDTH,groundLevel)])
 solids.append(ground)
 
