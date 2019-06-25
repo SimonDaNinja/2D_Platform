@@ -57,14 +57,14 @@ solids.append(pipePlatformsLeft)
 connectingPlatform = Solid(RED, [(400+450+800+300, groundLevel+platformSpacing*7, platformWidth, 50)])
 solids.append(connectingPlatform)
 
-stairs = Solid(RED, [(400+450+800+600, groundLevel+platformSpacing*8, platformWidth,platformSpacing*8),
-    (400+450+800+600+platformWidth*1, groundLevel+platformSpacing*7, platformWidth,platformSpacing*7),
-    (400+450+800+600+platformWidth*2, groundLevel+platformSpacing*6, platformWidth,platformSpacing*6),
-    (400+450+800+600+platformWidth*3, groundLevel+platformSpacing*5, platformWidth,platformSpacing*5),
-    (400+450+800+600+platformWidth*4, groundLevel+platformSpacing*4, platformWidth,platformSpacing*4),
-    (400+450+800+600+platformWidth*5, groundLevel+platformSpacing*3, platformWidth,platformSpacing*3),
-    (400+450+800+600+platformWidth*6, groundLevel+platformSpacing*2, platformWidth,platformSpacing*2),
-    (400+450+800+600+platformWidth*7, groundLevel+platformSpacing*1, platformWidth,platformSpacing*1)])
+stairs = Solid(RED, [(platformSpacing+400+450+800+600, groundLevel+platformSpacing*8, platformWidth,platformSpacing*8),
+    (platformSpacing+400+450+800+600+platformWidth*1, groundLevel+platformSpacing*7, platformWidth,platformSpacing*7),
+    (platformSpacing+400+450+800+600+platformWidth*2, groundLevel+platformSpacing*6, platformWidth,platformSpacing*6),
+    (platformSpacing+400+450+800+600+platformWidth*3, groundLevel+platformSpacing*5, platformWidth,platformSpacing*5),
+    (platformSpacing+400+450+800+600+platformWidth*4, groundLevel+platformSpacing*4, platformWidth,platformSpacing*4),
+    (platformSpacing+400+450+800+600+platformWidth*5, groundLevel+platformSpacing*3, platformWidth,platformSpacing*3),
+    (platformSpacing+400+450+800+600+platformWidth*6, groundLevel+platformSpacing*2, platformWidth,platformSpacing*2),
+    (platformSpacing+400+450+800+600+platformWidth*7, groundLevel+platformSpacing*1, platformWidth,platformSpacing*1)])
 solids.append(stairs)
 
 isPeriodic = False
