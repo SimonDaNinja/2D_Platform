@@ -38,6 +38,8 @@ EXAMPLE_SOLIDS = []
 EXAMPLE_SOLIDS.append(Solid((int(255/2),0,0),[(0,200,math.floor(WIDTH/3),200),(math.floor(WIDTH/3),100,math.floor(WIDTH/3),100),(math.floor(WIDTH/3)*2,200,(WIDTH-1+math.floor(WIDTH/3)*2),200)]))
 EXAMPLE_SOLIDS.append(Solid((0,int(255/3*2),0),[(0,int(HEIGHT*2/3),250,50)]))
 
+YELLOW = (255,215,0)
+
 class Stage:
     def __init__(self,
             screen,
@@ -87,6 +89,11 @@ class Stage:
         
 
     def Run(self):
+        fontname = 'Dyuthi'
+        myfont = pygame.font.SysFont(fontname, 80)
+        wintextsurface = myfont.render('Yay! You won!', False, YELLOW)
+        textWidth, textHeight = wintextsurface.get_size()
+        gameAlreadyOver = False
         playing = True
         while playing:
             self.screen.fill((0,128,255))
@@ -103,16 +110,34 @@ class Stage:
             self.character.Gravitate(GRAVITY_CONSTANT_X, GRAVITY_CONSTANT_Y)
             self.character.Step(D_T, self.isPeriodic)
             isOnTheGround = False
+            gameOver = False
+            win = False
             for solid in self.solids:
-                isOnTheGround = bool(isOnTheGround + solid.CollideWithCharacter(self.character))
+                isOnTheGroundTmp, gameOverTmp, winTmp = solid.CollideWithCharacter(self.character)
+                isOnTheGround = bool(isOnTheGround + isOnTheGroundTmp)
+                gameOver = bool(gameOver + gameOverTmp)
+                win = bool(win + winTmp)
             self.character.onTheGround = isOnTheGround
+
+            if gameOver and not gameAlreadyOver:
+                gameAlreadyOver = True
+                if win:
+                    print('you won!')
+                    wonGame = True
+                else:
+                    print('you lost!')
+                    wonGame = False
 
             if self.character.onTheGround:
                 self.character.SlowDown(D_T)
-            self.character.Draw()
             topLeftX, topLeftY = self.character.GetUpperLeftCorner()
             for solid in self.solids:
                 solid.Draw(self.screen, self.stageWidth, self.stageHeight, topLeftX, topLeftY)
+            self.character.Draw()
+            if gameAlreadyOver and wonGame:
+                self.character.Jump()
+                self.character.ShitColorRandomly()
+                self.screen.blit(wintextsurface,(int(self.screenWidth/2-textWidth/2),int(self.screenHeight/2-textHeight/2)))
             pygame.display.flip()
             self.clock.tick(FPS)
             self.character.accelerationX = 0

@@ -24,6 +24,7 @@
 import pygame
 import math
 import movement_constants
+import random
 
 class Character:
     MAX_SPEED = 8000
@@ -126,7 +127,14 @@ class Character:
             speedX = max(velocitySign*self.velocityX-self.stoppingRateVel*dT,0)
             self.velocityX = velocitySign*speedX
 
+    def ShitColorRandomly(self):
+        if self.onTheGround:
+            x = random.randint(0,255)
+            y = random.randint(0,255)
+            z = random.randint(0,255)
+            randomColor = (x,y,z)
+            self.color = randomColor
+
     def Jump(self):
         if self.onTheGround:
             self.velocityY += 1500
-            self.onTheGround = False

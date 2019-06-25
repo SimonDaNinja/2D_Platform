@@ -42,6 +42,8 @@ class Solid:
 
     def CollideWithCharacter(self, character):
         onTopOfSolid = False
+        gameOver = False
+        win = False
         for seg in self.segments:
             leftX = character.x-character.radius
             rightX = character.x+character.radius
@@ -65,7 +67,8 @@ class Solid:
                         shortestYMoveOut = seg[1]-bottomY
                     if abs(shortestXMoveOut)>abs(shortestYMoveOut):
                         character.y += shortestYMoveOut
-                        onTopOfSolid = True
+                        if character.velocityY<0:
+                            onTopOfSolid = True
                         if shortestYMoveOut>0 and character.velocityY>0:
                             signMove = abs(shortestYMoveOut)/shortestYMoveOut
                             signVel = abs(character.velocityY)/character.velocityY
@@ -90,4 +93,31 @@ class Solid:
                                 character.velocityX = -character.velocityX*character.xBounciness
                             else:
                                 character.velocityX = 0
-        return onTopOfSolid
+        return onTopOfSolid, gameOver, win
+
+class Goal(Solid):
+    def CollideWithCharacter(self, character):
+        onTopOfSolid = False
+        gameOver = False
+        win = False
+        onTopOfSolid = False
+        for seg in self.segments:
+            leftX = character.x-character.radius
+            rightX = character.x+character.radius
+            topY = character.y+character.radius
+            bottomY = character.y-character.radius
+            leftEndSurrounded = ((seg[0] < leftX) and (leftX < (seg[0]+seg[2])))
+            rightEndSurrounded = ((seg[0] < rightX) and (rightX < (seg[0]+seg[2])))
+            segmentSurroundedX = ((seg[0] >= leftX) and (rightX >= (seg[0]+seg[2])))
+            if leftEndSurrounded or rightEndSurrounded or segmentSurroundedX:
+                if abs(seg[0]-rightX)>abs(seg[0]+seg[2]-leftX):
+                    shortestXMoveOut = seg[0]+seg[2]-leftX
+                else:
+                    shortestXMoveOut = seg[0]-rightX
+                bottomSurrounded = ((seg[1] >= bottomY) and (bottomY > (seg[1]-seg[3])))
+                topSurrounded = ((seg[1] >= topY) and (topY > (seg[1]-seg[3])))
+                segmentSurroundedY = ((seg[1] <= topY) and (bottomY < (seg[1]-seg[3])))
+                if bottomSurrounded or topSurrounded or segmentSurroundedY:
+                    gameOver = True
+                    win = True
+        return onTopOfSolid, gameOver, win

@@ -26,16 +26,18 @@ import pygame
 import math
 from character import Character
 from solid import Solid
+from solid import Goal
 from stage import Stage
 
 WIDTH = 800
 HEIGHT = 600
 GREEN = (0,200,0)
 RED = (200,0,0)
+WHITE = (255, 255, 255)
 
 STAGE_X_SHIFT = 600
 
-STAGE_WIDTH = 4300 + STAGE_X_SHIFT
+STAGE_WIDTH = 4400 + STAGE_X_SHIFT
 STAGE_HEIGHT = 3500 + STAGE_X_SHIFT
 
 pygame.init()
@@ -91,6 +93,9 @@ stairs = Solid(RED, [(STAGE_X_SHIFT+platformSpacing+400+450+800+600, groundLevel
     (STAGE_X_SHIFT+platformSpacing+400+450+800+600+platformWidth*6, groundLevel+platformSpacing*2, platformWidth,platformSpacing*2),
     (STAGE_X_SHIFT+platformSpacing+400+450+800+600+platformWidth*7, groundLevel+platformSpacing*1, platformWidth,platformSpacing*1)])
 solids.append(stairs)
+
+goal = Goal(WHITE, [(STAGE_WIDTH - platformWidth - 50, groundLevel+platformSpacing, platformWidth, platformSpacing)])
+solids.append(goal)
 
 isPeriodic = False
 stage = Stage(screen, character, isPeriodic, STAGE_WIDTH, STAGE_HEIGHT, solids)
