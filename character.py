@@ -48,12 +48,6 @@ class Character:
             return upperLeft
 
     def Draw(self):
-        """
-        if self.stageWidth == self.screenWidth and self.stageHeight== self.screenHeight:
-            screenX = int(self.x)
-            screenY = int(self.stageHeight - self.y)
-        else:
-        """
         upperLeftX, upperLeftY = self.GetUpperLeftCorner()
         relativeX = self.x - upperLeftX
         relativeY = self.y - upperLeftY + self.stageHeight

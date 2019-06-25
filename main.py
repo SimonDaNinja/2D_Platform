@@ -1,7 +1,7 @@
 if __name__ == '__main__':
     choice = ''
     while True:
-        choice = input('do you want the small stage [1] or the big stage [2]? ')
+        choice = input('Stages:\n\nsmall stage [1]\nbig stage [2]\n\nChoose stage: ')
         if (choice == '1') or (choice == '2'):
             break
         else:
