@@ -1,4 +1,6 @@
-License for PyGame:
+This project makes use of pygame
+pygame is found here: https://github.com/pygame/pygame
+License for pygame:
 --------------------------------------------------------------------------------
 		  GNU LESSER GENERAL PUBLIC LICENSE
 		       Version 2.1, February 1999
