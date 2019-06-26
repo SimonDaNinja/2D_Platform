@@ -22,6 +22,10 @@
 #SOFTWARE.
 #----------------
 
+# This stage was designed in detail by my 10 year old nephew,
+# using pencil and paper, and so it is dedicated to him.
+# It challenged me to develop some new and useful features, such
+# as death water and moving platforms.
 
 # If this file is run, an overview of the stage will be displayed
 import pygame

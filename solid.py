@@ -39,7 +39,14 @@ class Solid:
             screenY = int(stageHeight - relativeY)
             pygame.draw.rect(surface, self.color, pygame.Rect(screenX, screenY, seg[2], seg[3]))
 
-    def Move(self,dT):
+    def HandleSolidSpecialty(self, argDict):
+        # For some solids, it can be necessary to use a custom
+        # function. E.g the Move-function in MovingSolidX.
+        # In order to not clutter up the Stage class with ad hoc
+        # lines every time a new Solid subclass needs a custom 
+        # function, the arguments to custom functions should 
+        # as often as possible be extracted using some overridden
+        # version of this function
         pass
 
     def CollideWithCharacter(self, character):
@@ -186,6 +193,10 @@ class MovingSolidX(Solid):
                 self.character.x -= dT*self.SPEED
             if x<self.xLeft:
                 self.goingRight = True
+
+    def HandleSolidSpecialty(self, argDict):
+        dT = argDict['MovingSolidX']
+        self.Move(dT)
 
     def CollideWithCharacter(self, character):
         onTopOfSolid = False
