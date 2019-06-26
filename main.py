@@ -34,13 +34,3 @@ if __name__ == '__main__':
             if won is None:
                 exit()
             importlib.reload(stage)
-    exit()
-
-    import julians_stage
-    won = julians_stage.stage.Run()
-    exit()
-    import example_stage
-    won = example_stage.stage.Run()
-    if won:
-        import new_stage
-        won = new_stage.stage.Run()
