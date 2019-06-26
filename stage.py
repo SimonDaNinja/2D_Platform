@@ -90,27 +90,36 @@ class Stage:
 
     def Run(self):
         fontname = 'Dyuthi'
-        myFont = pygame.font.SysFont(fontname, 80)
-        myFontQuit = pygame.font.SysFont(fontname, 40)
-        winTextSurface = myFont.render('Yay! You won!', False, YELLOW)
-        textWidth, textHeight = winTextSurface.get_size()
-        quitTextSurface = myFontQuit.render('Press Enter to continue', False, YELLOW)
-        textWidthQuit, textHeightQuit = quitTextSurface.get_size()
+        myFontBig = pygame.font.SysFont(fontname, 80)
+        myFontSmall = pygame.font.SysFont(fontname, 40)
+
+        winTextSurface = myFontBig.render('Yay! You won!', False, YELLOW)
+        textWidthWin, textHeightWin = winTextSurface.get_size()
+
+        loseTextSurface = myFontBig.render('Oh no! You lost!', False, YELLOW)
+        textWidthLose, textHeightLose = loseTextSurface.get_size()
+
+        continueTextSurface = myFontSmall.render('Press Enter to continue', False, YELLOW)
+        textWidthContinue, textHeightContinue = continueTextSurface.get_size()
+
+        tryAgainTextSurface = myFontSmall.render('Press Enter to try again', False, YELLOW)
+        textWidthTryAgain, textHeightTryAgain = tryAgainTextSurface.get_size()
+
         gameAlreadyOver = False
         playing = True
         while playing:
             self.screen.fill((0,128,255))
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
+                if event.type == pygame.KEYDOWN and (event.key == pygame.K_UP or event.key == pygame.K_w or event.key == pygame.K_SPACE):
                     self.character.Jump()
                 if event.type == pygame.QUIT:
                     playing = False
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and gameAlreadyOver:
                     return wonGame
             pressed = pygame.key.get_pressed()
-            if pressed[pygame.K_LEFT]:
+            if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
                 self.character.Run(movement_constants.LEFT)
-            if pressed[pygame.K_RIGHT]:
+            if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
                 self.character.Run(movement_constants.RIGHT)
             self.character.Gravitate(GRAVITY_CONSTANT_X, GRAVITY_CONSTANT_Y)
             self.character.Step(D_T, self.isPeriodic)
@@ -122,6 +131,7 @@ class Stage:
                 isOnTheGround = bool(isOnTheGround + isOnTheGroundTmp)
                 gameOver = bool(gameOver + gameOverTmp)
                 win = bool(win + winTmp)
+                solid.Move(D_T)
             self.character.onTheGround = isOnTheGround
 
             if gameOver and not gameAlreadyOver:
@@ -141,9 +151,14 @@ class Stage:
             self.character.Draw()
             if gameAlreadyOver and wonGame:
                 self.character.Jump()
-                self.character.ShitColorRandomly()
-                self.screen.blit(winTextSurface,(int(self.screenWidth/2-textWidth/2),int(self.screenHeight/2-textHeight/2-textHeightQuit/2)))
-                self.screen.blit(quitTextSurface,(int(self.screenWidth/2-textWidthQuit/2),int(self.screenHeight/2-textHeightQuit/2+textHeight/2)))
+                self.character.ShiftColorRandomly()
+                self.screen.blit(winTextSurface,(int(self.screenWidth/2-textWidthWin/2),int(self.screenHeight/2-textHeightWin/2-textHeightContinue/2)))
+                self.screen.blit(continueTextSurface,(int(self.screenWidth/2-textWidthContinue/2),int(self.screenHeight/2-textHeightContinue/2+textHeightWin/2)))
+            elif gameAlreadyOver and not wonGame:
+                self.screen.blit(loseTextSurface,(int(self.screenWidth/2-textWidthLose/2),int(self.screenHeight/2-textHeightLose/2-textHeightTryAgain/2)))
+                self.screen.blit(tryAgainTextSurface,(int(self.screenWidth/2-textWidthTryAgain/2),int(self.screenHeight/2-textHeightTryAgain/2+textHeightLose/2)))
+
+
             pygame.display.flip()
             self.clock.tick(FPS)
             self.character.accelerationX = 0

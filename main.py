@@ -21,7 +21,24 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 #----------------
+import stages
+import importlib
+
 if __name__ == '__main__':
+    for stageName in stages.stages:
+        won = False
+        importCommand = 'import ' + stageName + ' as stage'
+        exec(importCommand)
+        while not won:
+            won = stage.stage.Run()
+            if won is None:
+                exit()
+            importlib.reload(stage)
+    exit()
+
+    import julians_stage
+    won = julians_stage.stage.Run()
+    exit()
     import example_stage
     won = example_stage.stage.Run()
     if won:

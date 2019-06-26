@@ -21,6 +21,8 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 #----------------
+
+
 # If this file is run, an overview of the stage will be displayed
 import pygame
 import math
@@ -28,35 +30,57 @@ from character import Character
 from solid import Solid
 from stage import Stage
 from solid import Goal
+from solid import Trap
+from solid import MovingSolidX
+import color_palette
 
 WIDTH = 800
 HEIGHT = 600
-BROWN = (int(255/2),0,0)
-GREEN = (0,int(255/3*2),0)
-WHITE = (255,255,255)
 
-STAGE_WIDTH = WIDTH
-STAGE_HEIGHT = HEIGHT + 300
+STAGE_WIDTH = 1200*3
+STAGE_HEIGHT = 1000
+
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
-character = Character(screen, int(WIDTH/2), int(HEIGHT/2), (255,215,0), 50)
 solids = []
-ground = Solid(BROWN,
-        [(0,200,math.floor(WIDTH/3),200),
-            (math.floor(WIDTH/3),100,math.floor(WIDTH/3),100),
-            (math.floor(WIDTH/3)*2,200,(WIDTH-1-math.floor(WIDTH/3)*2),200)])
-platform =Solid(GREEN,[(0,int(HEIGHT*2/3),250,50)])
+
+underWaterCatcher = Solid((0,0,0),[(0, -500, STAGE_WIDTH, 50)])
+solids.append(underWaterCatcher)
+
+waterLevel = 100
+water = Trap(color_palette.TEAL, [(0,waterLevel,STAGE_WIDTH,waterLevel)])
+solids.append(water)
+
+plankThickness = 50
+plankLength = 300
+correctionTerm1 = 50
+correctionTerm2 = correctionTerm1+150
+plank = Solid(color_palette.BROWN, [(plankThickness, waterLevel+plankThickness, plankLength, plankThickness),
+    (plankThickness+6*plankLength, waterLevel+plankThickness, plankLength, plankThickness),
+    (correctionTerm1+plankThickness+7*plankLength+plankThickness*2, waterLevel + plankThickness*5, plankThickness*2, plankThickness*2),
+    (correctionTerm2+plankThickness+7*plankLength+plankThickness*2+plankThickness*3, waterLevel + plankThickness*7, plankLength*2, plankThickness)])
+solids.append(plank)
+
+startX = 2*plankThickness+plankLength +plankLength
+startY = plankThickness+waterLevel
+xEnds = (4*plankThickness+plankLength, plankThickness+5*plankLength-3*plankThickness)
+solids.append(plank)
+
+movingPlank = MovingSolidX(color_palette.BROWN,startX, startY, plankLength, plankThickness, xEnds, False)
+solids.append(movingPlank)
 
 goalWidth = 100
 goalHeight = 150
-goal = Goal(WHITE, [(STAGE_WIDTH - goalWidth - 50, 700+goalHeight, goalWidth, goalHeight)])
-
-solids.append(ground)
-solids.append(platform)
+goal = Goal(color_palette.WHITE, [(correctionTerm2+plankThickness+7*plankLength+plankThickness*2+plankThickness*3+plankLength, waterLevel + plankThickness*7+goalHeight, goalWidth, goalHeight)])
 solids.append(goal)
-isPeriodic = True
+
+startX = plankThickness + plankLength/2
+startY = int(HEIGHT/2)
+character = Character(screen, startX, startY, (255,215,0), 50)
+isPeriodic = False
 stage = Stage(screen, character, isPeriodic, STAGE_WIDTH, STAGE_HEIGHT, solids)
+
 if __name__ == '__main__':
     stage.DrawStage(800)
     input('press anything to exit')

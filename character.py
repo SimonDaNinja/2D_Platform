@@ -127,12 +127,12 @@ class Character:
             speedX = max(velocitySign*self.velocityX-self.stoppingRateVel*dT,0)
             self.velocityX = velocitySign*speedX
 
-    def ShitColorRandomly(self):
+    def ShiftColorRandomly(self):
         if self.onTheGround:
-            x = random.randint(0,255)
-            y = random.randint(0,255)
-            z = random.randint(0,255)
-            randomColor = (x,y,z)
+            r = random.randint(0,255)
+            g = random.randint(0,255)
+            b = random.randint(0,255)
+            randomColor = (r,g,b)
             self.color = randomColor
 
     def Jump(self):
