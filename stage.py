@@ -127,15 +127,15 @@ class Stage:
             gameOver = False
             win = False
 
-            solidSpecialtyArgDict = {}
-            solidSpecialtyArgDict['MovingSolidX'] = D_T
-
             for solid in self.solids:
                 isOnTheGroundTmp, gameOverTmp, winTmp = solid.CollideWithCharacter(self.character)
                 isOnTheGround = bool(isOnTheGround + isOnTheGroundTmp)
                 gameOver = bool(gameOver + gameOverTmp)
                 win = bool(win + winTmp)
-                solid.HandleSolidSpecialty(solidSpecialtyArgDict)
+
+                for instruction in solid.INSTRUCTIONS:
+                    exec(instruction, locals(), globals())
+
             self.character.onTheGround = isOnTheGround
 
             if gameOver and not gameAlreadyOver:
