@@ -27,14 +27,16 @@ import math
 from character import Character
 from solid import Solid
 from stage import Stage
+from solid import Goal
 
 WIDTH = 800
 HEIGHT = 600
 BROWN = (0,200,math.floor(WIDTH/3),200)
 GREEN = (0,int(255/3*2),0)
+WHITE = (255,255,255)
 
 STAGE_WIDTH = WIDTH
-STAGE_HEIGHT = HEIGHT
+STAGE_HEIGHT = HEIGHT + 300
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -46,8 +48,13 @@ ground = Solid((int(255/2),0,0),
             (math.floor(WIDTH/3)*2,200,(WIDTH-1-math.floor(WIDTH/3)*2),200)])
 platform =Solid(GREEN,[(0,int(HEIGHT*2/3),250,50)])
 
+goalWidth = 100
+goalHeight = 150
+goal = Goal(WHITE, [(STAGE_WIDTH - goalWidth - 50, 700+goalHeight, goalWidth, goalHeight)])
+
 solids.append(ground)
 solids.append(platform)
+solids.append(goal)
 isPeriodic = True
 stage = Stage(screen, character, isPeriodic, STAGE_WIDTH, STAGE_HEIGHT, solids)
 if __name__ == '__main__':

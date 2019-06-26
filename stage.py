@@ -90,9 +90,12 @@ class Stage:
 
     def Run(self):
         fontname = 'Dyuthi'
-        myfont = pygame.font.SysFont(fontname, 80)
-        wintextsurface = myfont.render('Yay! You won!', False, YELLOW)
-        textWidth, textHeight = wintextsurface.get_size()
+        myFont = pygame.font.SysFont(fontname, 80)
+        myFontQuit = pygame.font.SysFont(fontname, 40)
+        winTextSurface = myFont.render('Yay! You won!', False, YELLOW)
+        textWidth, textHeight = winTextSurface.get_size()
+        quitTextSurface = myFontQuit.render('Press Enter to continue', False, YELLOW)
+        textWidthQuit, textHeightQuit = quitTextSurface.get_size()
         gameAlreadyOver = False
         playing = True
         while playing:
@@ -102,6 +105,8 @@ class Stage:
                     self.character.Jump()
                 if event.type == pygame.QUIT:
                     playing = False
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and gameAlreadyOver:
+                    return wonGame
             pressed = pygame.key.get_pressed()
             if pressed[pygame.K_LEFT]:
                 self.character.Run(movement_constants.LEFT)
@@ -137,7 +142,8 @@ class Stage:
             if gameAlreadyOver and wonGame:
                 self.character.Jump()
                 self.character.ShitColorRandomly()
-                self.screen.blit(wintextsurface,(int(self.screenWidth/2-textWidth/2),int(self.screenHeight/2-textHeight/2)))
+                self.screen.blit(winTextSurface,(int(self.screenWidth/2-textWidth/2),int(self.screenHeight/2-textHeight/2-textHeightQuit/2)))
+                self.screen.blit(quitTextSurface,(int(self.screenWidth/2-textWidthQuit/2),int(self.screenHeight/2-textHeightQuit/2+textHeight/2)))
             pygame.display.flip()
             self.clock.tick(FPS)
             self.character.accelerationX = 0
