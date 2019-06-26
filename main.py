@@ -25,10 +25,8 @@ import stages
 import importlib
 
 if __name__ == '__main__':
-    for stageName in stages.stages:
+    for stage in stages.stages:
         won = False
-        importCommand = 'import ' + stageName + ' as stage'
-        exec(importCommand)
         while not won:
             won = stage.stage.Run()
             if won is None:
