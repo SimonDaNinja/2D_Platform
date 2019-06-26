@@ -40,8 +40,8 @@ import color_palette
 
 WIDTH = 800
 HEIGHT = 600
-
-STAGE_WIDTH = 1200*3
+secretGapWidth = 300
+STAGE_WIDTH = 1200*3+150+secretGapWidth
 STAGE_HEIGHT = 1000
 
 
@@ -54,7 +54,6 @@ solids.append(underWaterCatcher)
 
 waterLevel = 100
 water = Trap(color_palette.TEAL, [(0,waterLevel,STAGE_WIDTH,waterLevel)])
-solids.append(water)
 
 plankThickness = 50
 plankLength = 300
@@ -78,6 +77,10 @@ goalWidth = 100
 goalHeight = 150
 goal = Goal(color_palette.WHITE, [(correctionTerm2+plankThickness+7*plankLength+plankThickness*2+plankThickness*3+plankLength, waterLevel + plankThickness*7+goalHeight, goalWidth, goalHeight)])
 solids.append(goal)
+
+secretPlatform = Solid(color_palette.BROWN, [(STAGE_WIDTH-secretGapWidth, 110, secretGapWidth, 50)])
+solids.append(secretPlatform)
+solids.append(water)
 
 startX = plankThickness + plankLength/2
 startY = int(HEIGHT/2)

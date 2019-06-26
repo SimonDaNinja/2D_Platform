@@ -68,7 +68,8 @@ solids.append(pipeBottom)
 separatorHeight = 500
 pipeTop = Solid(RED, [(STAGE_X_SHIFT+400+450+pipeWidth, groundLevel+platformSpacing*3, pipeThickness, platformSpacing*2-pipeWidth),
     (STAGE_X_SHIFT+400+450+pipeWidth, pipeWidth+groundLevel+platformSpacing, 800-pipeWidth*2, pipeThickness),
-    (STAGE_X_SHIFT+400+450+800-pipeWidth, separatorHeight+groundLevel+platformSpacing*6, pipeThickness, separatorHeight+platformSpacing*5+pipeThickness-pipeWidth)])
+    (STAGE_X_SHIFT+400+450+800-pipeWidth, separatorHeight+groundLevel+platformSpacing*6, pipeThickness, separatorHeight+platformSpacing*5+pipeThickness-pipeWidth),
+    (STAGE_X_SHIFT+400+450+800-pipeWidth-100, separatorHeight+groundLevel+platformSpacing*6, 100, 50)])
 solids.append(pipeTop)
 
 pipePlatformWidth = 70
@@ -93,6 +94,9 @@ stairs = Solid(RED, [(STAGE_X_SHIFT+platformSpacing+400+450+800+600, groundLevel
     (STAGE_X_SHIFT+platformSpacing+400+450+800+600+platformWidth*6, groundLevel+platformSpacing*2, platformWidth,platformSpacing*2),
     (STAGE_X_SHIFT+platformSpacing+400+450+800+600+platformWidth*7, groundLevel+platformSpacing*1, platformWidth,platformSpacing*1)])
 solids.append(stairs)
+
+secretPlatform = Solid(RED, [(700,platformSpacing*12,platformWidth*5,50)])
+solids.append(secretPlatform)
 
 goal = Goal(WHITE, [(STAGE_WIDTH - platformWidth - 50, groundLevel+platformSpacing, platformWidth, platformSpacing)])
 solids.append(goal)

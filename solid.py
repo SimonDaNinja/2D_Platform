@@ -24,6 +24,10 @@
 import pygame
 
 class Solid:
+    # Instructions should contain strings of 
+    # subclass specific instructions to be executed
+    # in the stage class at the spot designated for special
+    # instructions. See MovingSolidX for an example
     INSTRUCTIONS = []
     def __init__(self,
             color,
@@ -138,10 +142,6 @@ class Trap(Solid):
             rightEndSurrounded = ((seg[0] < rightX) and (rightX < (seg[0]+seg[2])))
             segmentSurroundedX = ((seg[0] >= leftX) and (rightX >= (seg[0]+seg[2])))
             if leftEndSurrounded or rightEndSurrounded or segmentSurroundedX:
-                if abs(seg[0]-rightX)>abs(seg[0]+seg[2]-leftX):
-                    shortestXMoveOut = seg[0]+seg[2]-leftX
-                else:
-                    shortestXMoveOut = seg[0]-rightX
                 bottomSurrounded = ((seg[1] >= bottomY) and (bottomY > (seg[1]-seg[3])))
                 topSurrounded = ((seg[1] >= topY) and (topY > (seg[1]-seg[3])))
                 segmentSurroundedY = ((seg[1] <= topY) and (bottomY < (seg[1]-seg[3])))
