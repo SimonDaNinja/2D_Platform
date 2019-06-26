@@ -175,15 +175,17 @@ class MovingSolidX(Solid):
         if self.goingRight:
             x += dT*self.SPEED
             self.segments[0][0] = x
+            if not (self.character is None):
+                self.character.x += dT*self.SPEED
             if x>self.xRight:
                 self.goingRight = False
         else:
             x -= dT*self.SPEED
             self.segments[0][0] = x
+            if not (self.character is None):
+                self.character.x -= dT*self.SPEED
             if x<self.xLeft:
                 self.goingRight = True
-        if not (self.character is None):
-            self.character.x += dT*self.SPEED
 
     def CollideWithCharacter(self, character):
         onTopOfSolid = False

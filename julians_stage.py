@@ -82,5 +82,5 @@ isPeriodic = False
 stage = Stage(screen, character, isPeriodic, STAGE_WIDTH, STAGE_HEIGHT, solids)
 
 if __name__ == '__main__':
-    stage.DrawStage(800)
+    stage.DrawStage(1200)
     input('press anything to exit')
